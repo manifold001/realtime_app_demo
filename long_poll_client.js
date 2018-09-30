@@ -2,11 +2,13 @@ const http = require('http');
 
 const long_pool = (url, id) => {
     http.get(url, (res) => {
+        let data = "";
         res.on('data', (chunk) => {
-            console.log(`#${id} received: `, chunk);
+            data += chunk;
         })
 
         res.on('end', () => {
+            console.log(`#${id}, received: `, JSON.parse(data));
             long_pool(url, id);
         });
     }).on('error', (err) => {
